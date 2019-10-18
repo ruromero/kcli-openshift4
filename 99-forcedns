@@ -1,0 +1,9 @@
+#!/bin/sh
+IP=$(/bin/hostname -I | awk '{print $1}')
+if [ "$IP" != "" ] ; then
+  grep -q $IP /etc/resolv.conf
+  if [ "$?" != "0" ] ; then
+    sed -i "/nameserver.* #mdns /d" /etc/resolv.conf
+    sed -i "/^nameserver/i nameserver $IP #mdns" /etc/resolv.conf
+  fi
+fi

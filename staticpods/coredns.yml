@@ -13,6 +13,9 @@ spec:
   - name: conf-dir
     hostPath:
       path: "/etc/kubernetes"
+  - name: etc-dir
+    hostPath:
+      path: "/etc"
   initContainers:
   - name: update-coredns-conf
     securityContext:
@@ -34,6 +37,8 @@ spec:
     volumeMounts:
     - name: conf-dir
       mountPath: "/etc/coredns"
+    - name: etc-dir
+      mountPath: "/etchost"
     imagePullPolicy: IfNotPresent
   containers:
   - name: coredns

@@ -16,7 +16,6 @@ parameters:
  autostart: false
  keys: []
  api_ip: 
- dns_ip: 
  extra_disks: []
 
 {%- if not scale %}
@@ -25,12 +24,14 @@ parameters:
  keys: {{ keys }}
  numcpus: 2
  memory: {{ bootstrap_memory }}
- dns: 127.0.0.1
  nets:
   - name: {{ network }}
  disks:
   - size: {{ disk_size }}
  files:
+  - path: /etc/NetworkManager/dispatcher.d/99-forcedns
+    origin: 99-forcedns
+    mode: 755
   - path: /etc/kubernetes/manifests/coredns.yml
     origin: staticpods/coredns.yml
   - path: /etc/kubernetes/Corefile
@@ -56,11 +57,13 @@ parameters:
  numcpus: {{ numcpus }}
  memory: {{ master_memory }}
  autostart: {{ autostart }}
- dns: {{ dns_ip }}
  nets:
   - name: {{ network }}
  disks: {{ [disk_size] + extra_disks }}
  files:
+  - path: /etc/NetworkManager/dispatcher.d/99-forcedns
+    origin: 99-forcedns
+    mode: 755
 {%- if use_br %}
   - path: /etc/NetworkManager/dispatcher.d/98-brextscript
     origin: 98-brextscript
@@ -101,11 +104,13 @@ parameters:
  numcpus: {{ numcpus }}
  memory: {{ worker_memory }}
  autostart: {{ autostart }}
- dns: {{ dns_ip }}
  nets:
   - name: {{ network }}
  disks: {{ [disk_size] + extra_disks }}
  files:
+  - path: /etc/NetworkManager/dispatcher.d/99-forcedns
+    origin: 99-forcedns
+    mode: 755
 {%- if use_br %}
   - path: /etc/NetworkManager/dispatcher.d/98-brextscript
     origin: 98-brextscript
